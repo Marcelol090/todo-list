@@ -17,7 +17,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet"/>
       <body className={`${inter.className} h-full`}>
         <div className="bg-[#241722] h-full p-[10%] pt-16 lg:pt-1">
           {children}
