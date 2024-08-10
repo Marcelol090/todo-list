@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -15,8 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}><div className="bg-[#241722] min-h-screen p-[10%] pt-16 lg:pt-1">{children}</div></body>
+    <html lang="en" className="h-full">
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet"/>
+      <body className={`${inter.className} h-full`}>
+        <div className="bg-[#241722] h-full p-[10%] pt-16 lg:pt-1">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
