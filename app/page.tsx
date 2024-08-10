@@ -1,5 +1,6 @@
 import { Button } from "@/src/components/Button/Button";
 import CardList from "@/src/components/CardList/CardList";
+import { ItemList } from "@/src/components/ItemList/ItemsList";
 import ButtonMore from "@/src/Icons/ButtonMore";
 import PlusCircle from "@/src/Icons/PlusCircle";
 import Rectangle from "@/src/Icons/Rectangle";
@@ -15,9 +16,8 @@ export default function Home() {
         </Button>
       </header>
       <section className="flex justify-center items-center flex-1 relative w-full">
-        {/* <h1 className="absolute text-[#FEEDE1] lg:text-9xl md:text-8xl text-6xl font-bold font-poppins">TO-DO LIST</h1>
-        <Rectangle /> */}
-        <CardList title={"New list"} emoji={"😎"}/>
+        <h1 className="absolute text-[#FEEDE1] lg:text-9xl md:text-8xl text-6xl font-bold font-poppins">TO-DO LIST</h1>
+        <Rectangle />
       </section>
     </main>
   );
