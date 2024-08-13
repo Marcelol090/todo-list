@@ -1,24 +1,37 @@
-import { Button } from "@/src/components/Button/Button";
-import CardList from "@/src/components/CardList/CardList";
-import { ItemList } from "@/src/components/ItemList/ItemsList";
-import ButtonMore from "@/src/Icons/ButtonMore";
-import PlusCircle from "@/src/Icons/PlusCircle";
-import Rectangle from "@/src/Icons/Rectangle";
+"use client";
 
-export default function Home() {
+import GoogleIcon from "@/src/Icons/GoogleIcon";
+
+const Login = () => {
+  const handleGoogleSignIn = () => {
+    // Aqui você colocaria a lógica para autenticar com Google
+    console.log("Google Sign-In triggered");
+  };
+
   return (
-    <main className="flex-1 h-full flex flex-col">
-      <header className="flex justify-between border-b-2 border-[#54353ECC] pb-4 mt-16">
-        <h1 className="text-2xl font-bold text-[#FEEDE1] font-poppins">TO DO | YOUR LISTS</h1>
-        <Button className="flex gap-4 text-[#F25551] h-6">
-          <PlusCircle />
-          Add new list
-        </Button>
-      </header>
-      <section className="flex justify-center items-center flex-1 relative w-full">
-        <h1 className="absolute text-[#FEEDE1] lg:text-9xl md:text-8xl text-6xl font-bold font-poppins">TO-DO LIST</h1>
-        <Rectangle />
-      </section>
-    </main>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="flex flex-col items-center w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
+        {/* Logo Section */}
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold text-gray-800 text-center mb-2">
+            Welcome Back!
+          </h1>
+          <p className="text-gray-600 text-center">
+            Sign in to continue with your account
+          </p>
+        </div>
+
+        {/* Google Sign-In Button */}
+        <button
+          onClick={handleGoogleSignIn}
+          className="w-full bg-white border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-100 transition-colors duration-200 flex items-center justify-center space-x-2"
+        >
+          <GoogleIcon width={30} height={30} />
+          <span>Continue with Google</span>
+        </button>
+      </div>
+    </div>
   );
-}
+};
+
+export default Login;

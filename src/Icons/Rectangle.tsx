@@ -16,7 +16,7 @@ const Rectangle = ({ ...props }: SVGProps<SVGSVGElement>) => {
         y="2"
         width="467"
         height="308"
-        fill="#241722"
+        fill="transparent"
         stroke="url(#paint0_linear_142_414)"
         strokeWidth="4"
       />
