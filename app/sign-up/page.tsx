@@ -2,7 +2,7 @@ import GirlLaptop from '@/src/Icons/GirlLaptop';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const SignUp = () => {
+const SignUp  = () => {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="flex w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
