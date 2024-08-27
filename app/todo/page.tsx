@@ -1,11 +1,15 @@
+'use client';
+
 import { Button } from "@/src/components/Button/Button";
 import { ItemList } from "@/src/components/ItemList/ItemsList";
 import ArrowLeftIcon from "@/src/Icons/ArrowLeftIcon";
 import ButtonMore from "@/src/Icons/ButtonMore";
 import Trash from "@/src/Icons/Trash";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Todo() {
+
   return (
     <main className="flex-1 h-full flex flex-col">
       <header className="items-center flex justify-between border-b-2 border-[#54353ECC] pb-4 mt-16">
