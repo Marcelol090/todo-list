@@ -46,6 +46,17 @@ const SignUp  = () => {
                 placeholder="********"
               />
             </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                id="confirm-password"
+                className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring focus:border-blue-500"
+                placeholder="********"
+              />
+            </div>
             <button
               type="submit"
               className="w-full bg-pink-500 text-white font-bold py-2 px-4 rounded-full hover:bg-pink-600 transition-colors duration-200"
