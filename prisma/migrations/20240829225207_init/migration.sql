@@ -1,7 +1,8 @@
 -- CreateTable
 CREATE TABLE "User" (
     "user_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "senha" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "email" TEXT NOT NULL
 );
 
@@ -16,13 +17,13 @@ CREATE TABLE "List" (
 
 -- CreateTable
 CREATE TABLE "Item" (
-    "item_id" BIGINT NOT NULL PRIMARY KEY,
+    "item_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "edited_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "item_name" TEXT NOT NULL,
-    "finished" BOOLEAN NOT NULL,
-    "priority" TEXT NOT NULL,
-    "list_id" BIGINT NOT NULL
+    "finished" BOOLEAN NOT NULL DEFAULT false,
+    "priority" TEXT NOT NULL DEFAULT 'Baixa',
+    "list_id" INTEGER NOT NULL
 );
 
 -- CreateIndex

@@ -1,31 +1,38 @@
 import { NextResponse } from "next/server";
 import {
-  getUserService,
-  createUserService,
+  getUsers,
+  createUser,
 } from "@/src/modules/users/services/user.service";
 
 export async function GET() {
-  const users = await getUserService();
+  const users = await getUsers();
   return NextResponse.json({ users });
 }
 
 export async function POST(req: Request) {
   try {
-    const { email, senha, confirmarSenha } = await req.json();
-    
-    const user = await createUserService(email, senha, confirmarSenha);
-  
-    if(user === undefined){
-      NextResponse.json(
-        { error: "Erro ao criar usuário." },
-        { status: 500 }
-      );
+    const { name, email, password, confirmPassword } = await req.json();
+
+    const response = await createUser({
+      name,
+      email,
+      password,
+      confirmPassword,
+    });
+
+    if (response instanceof NextResponse) {
+      const errorData = await response.json();
+
+      return NextResponse.json(
+        { error: errorData.error },
+        { status: 400 }
+      );;
     }
-    return NextResponse.json({ user });
+
+    return NextResponse.json({ user: response });
   } catch (error) {
-    console.error("Erro ao criar usuário:", error);
     return NextResponse.json(
-      { error: "Erro ao criar usuário." },
+      { error: "Error creating user." },
       { status: 500 }
     );
   }
