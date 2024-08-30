@@ -25,7 +25,7 @@ const SignUp = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(name && email && password && confirmPassword){
+    if (name && email && password && confirmPassword) {
       mutation.mutate({
         name,
         email,
@@ -33,7 +33,6 @@ const SignUp = () => {
         confirmPassword,
       });
     }
-    
   };
 
   return (
@@ -44,11 +43,9 @@ const SignUp = () => {
             <h2 className="mb-2 text-4xl font-bold text-gray-800">Sign Up</h2>
             <p className="text-gray-600">Create your account</p>
           </div>
-    {mutation.isError && (
-      <p className="mb-4 text-red-500">
-        Erro ao criar o usuario
-      </p>
-    )}
+          {mutation.isError && (
+            <p className="mb-4 text-red-500">Erro ao criar o usuario</p>
+          )}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label
@@ -64,7 +61,7 @@ const SignUp = () => {
                 placeholder="John Doe"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                // required
+                required
               />
             </div>
             <div className="mb-4">
