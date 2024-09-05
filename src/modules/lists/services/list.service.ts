@@ -30,4 +30,43 @@ export async function getListsByUserId({
   } catch (error) {
     throw error;
   }
+
+}
+
+
+export type CreateListProps = {
+  listName: string;
+  userId: number;
+  authToken: string;
+  priority?: "Alta" | "Media" | "Baixa";
+};
+
+export async function createList({
+  listName,
+  userId,
+  authToken,
+  priority = "Baixa",	
+}: CreateListProps) {
+  try {
+    const { payload } = await jwtVerify(
+      authToken,
+      new TextEncoder().encode(process.env.JWT_SECRET!)
+    );
+
+    if (payload.userId !== userId) {
+      throw new Error("Invalid token");
+    }
+
+    const list = await prisma.list.create({
+      data: {
+        listName,
+        userId,
+        priority,
+      },
+    });
+
+    return list;
+  } catch (error) {
+    throw error;
+  }
 }
