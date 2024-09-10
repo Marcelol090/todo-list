@@ -22,11 +22,13 @@ model User {
 }
 
 model List {
-  listId   Int    @id @default(autoincrement()) @map("list_id")
-  listName String @map("list_name")
-  priority String @default("Baixa")
-  userId   Int    @map("user_id")
-  user     User   @relation(fields: [userId], references: [userId])
+  listId    Int     @id @default(autoincrement()) @map("list_id")
+  listName  String  @map("list_name")
+  listEmoji String  @default("😎")
+  priority  String  @default("Baixa")
+  userId    Int     @map("user_id")
+  finished  Boolean @default(false)
+  user      User    @relation(fields: [userId], references: [userId])
 }
 
 model Item {

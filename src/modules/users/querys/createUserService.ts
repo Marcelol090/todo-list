@@ -7,7 +7,7 @@ export type User = {
   password: string;
 };
 
-export const createUserPath = "/api/user";
+export const createUserPath = "/api/user/create";
 
 type CreateUserProps = {
   name: string;

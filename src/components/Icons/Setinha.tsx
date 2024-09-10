@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-const Setinha = ({ ...props }: SVGProps<SVGSVGElement>) => {
+const ArrowRight = ({ ...props }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       width={props.width ?? "32"}
@@ -23,4 +23,4 @@ const Setinha = ({ ...props }: SVGProps<SVGSVGElement>) => {
   );
 };
 
-export default Setinha;
+export default ArrowRight;

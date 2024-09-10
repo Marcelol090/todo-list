@@ -2,9 +2,9 @@
 
 import { Button } from "@/src/components/Button/Button";
 import { ItemList } from "@/src/components/ItemList/ItemsList";
-import ArrowLeftIcon from "@/src/Icons/ArrowLeftIcon";
-import ButtonMore from "@/src/Icons/ButtonMore";
-import Trash from "@/src/Icons/Trash";
+import ArrowLeftIcon from "@/src/components/Icons/ArrowLeftIcon";
+import ButtonMore from "@/src/components/Icons/ButtonMore";
+import Trash from "@/src/components/Icons/Trash";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 

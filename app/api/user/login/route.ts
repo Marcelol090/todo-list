@@ -5,6 +5,13 @@ export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
 
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: "Email and password are required." },
+        { status: 400 }
+      );
+    }
+
     const token = await loginUser({
       email,
       password,
@@ -12,7 +19,10 @@ export async function POST(req: Request) {
 
     if (token instanceof NextResponse) {
       const errorData = await token.json();
-      return NextResponse.json({ error: errorData.error }, { status: 400 });
+      return NextResponse.json(
+        { error: errorData.error },
+        { status: token.status }
+      );
     }
 
     const responseCookie = NextResponse.json({ token, success: true });
@@ -30,6 +40,7 @@ export async function POST(req: Request) {
 
     return responseCookie;
   } catch (error) {
+    console.error("Error during login:", error);
     return NextResponse.json({ error: "Error login user." }, { status: 500 });
   }
 }

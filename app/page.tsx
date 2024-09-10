@@ -1,5 +1,5 @@
 import { SignInForm } from "@/src/components/Forms/SignInForm/SignInForm";
-import GirlLaptop from "@/src/Icons/GirlLaptop";
+import GirlLaptop from "@/src/components/Icons/GirlLaptop";
 import Link from "next/link";
 
 const SignIn = () => {

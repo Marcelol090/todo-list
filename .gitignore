@@ -10,6 +10,9 @@
 /.next/
 /out/
 
+# bda
+dev.db
+
 # production
 /build
 

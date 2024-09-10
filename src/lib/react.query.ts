@@ -32,7 +32,7 @@ export type InfiniteQueryFnOptions<
   TQueryFnData = unknown,
   TError = unknown,
   TData = TQueryFnData,
-  TQueryData = TQueryFnData
+  TQueryData = TQueryFnData,
 > = Omit<
   UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryData, any[]>,
   "queryKey" | "queryFn" | "initialData"
