@@ -1,6 +1,6 @@
 "use client"
-import ButtonRainbowIcon from "@/src/Icons/ButtonRainbowIcon"
-import CheckedBoxRainbow from "@/src/Icons/CheckedBoxRainbow"
+import ButtonRainbowIcon from "@/src/components/Icons/ButtonRainbowIcon"
+import CheckedBoxRainbow from "@/src/components/Icons/CheckedBoxRainbow"
 import { useState } from "react"
 
 type ButtonRainbowProps = {

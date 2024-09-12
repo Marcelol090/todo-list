@@ -14,27 +14,29 @@ datasource db {
 }
 
 model User {
-  user_id Int    @id @default(autoincrement())
-  senha   String
-  email   String @unique
-  lists   List[]
+  userId   Int    @id @default(autoincrement()) @map("user_id")
+  name     String
+  password String
+  email    String @unique
+  lists    List[]
 }
 
 model List {
-  list_id   Int    @id @default(autoincrement())
-  list_name String
-  priority  String @default("Baixa")
-  user_id   Int
-  user      User   @relation(fields: [user_id], references: [user_id])
+  listId    Int     @id @default(autoincrement()) @map("list_id")
+  listName  String  @map("list_name")
+  listEmoji String  @default("😎")
+  priority  String  @default("Baixa")
+  userId    Int     @map("user_id")
+  finished  Boolean @default(false)
+  user      User    @relation(fields: [userId], references: [userId])
 }
 
-
 model Item {
-  item_id    BigInt   @id @default(autoincrement())
-  created_at DateTime @default(now()) 
-  edited_at  DateTime @default(now()) @updatedAt
-  item_name  String
-  finished   Boolean
-  priority   String
-  list_id    BigInt
+  itemId    Int      @id @default(autoincrement()) @map("item_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  editedAt  DateTime @default(now()) @updatedAt @map("edited_at")
+  itemName  String   @map("item_name")
+  finished  Boolean  @default(false)
+  priority  String   @default("Baixa")
+  listId    Int      @map("list_id")
 }
