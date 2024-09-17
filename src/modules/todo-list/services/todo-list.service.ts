@@ -2,7 +2,6 @@ import { jwtVerify } from "jose";
 import { PrismaClient } from "@prisma/client";
 import { ListType } from "@/src/modules/todo-list/types/ListType";
 
-
 const prisma = new PrismaClient();
 
 export type GetListsByUserIdProps = {
@@ -106,7 +105,7 @@ export async function updateList({
     }
     const lsit = await prisma.list.findUnique({ where: { listId } });
 
-    if(!lsit) {
+    if (!lsit) {
       throw new Error("List not found");
     }
 
@@ -121,6 +120,48 @@ export async function updateList({
     });
 
     return updatedList;
+  } catch (error: any) {
+    if (error.code === "ERR_JWT_EXPIRED") {
+      error.message = "Token has expired";
+      error.status = 401;
+    }
+
+    throw error;
+  }
+}
+
+export type DeleteListProps = {
+  listIds: number[];
+  userId: number;
+  authToken: string;
+};
+
+export async function deleteList({
+  listIds,
+  userId,
+  authToken,
+}: DeleteListProps): Promise<void> {
+  try {
+    const { payload } = await jwtVerify(
+      authToken,
+      new TextEncoder().encode(process.env.JWT_SECRET!)
+    );
+
+    if (payload.userId !== userId) {
+      throw new Error("Invalid token");
+    }
+
+    const lists = await prisma.list.findMany({
+      where: { listId: { in: listIds } },
+    });
+
+    if (lists.length !== listIds.length) {
+      throw new Error("Some lists were not found");
+    }
+
+    await prisma.list.deleteMany({
+      where: { listId: { in: listIds }, userId },
+    });
   } catch (error: any) {
     if (error.code === "ERR_JWT_EXPIRED") {
       error.message = "Token has expired";

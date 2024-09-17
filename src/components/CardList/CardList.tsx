@@ -1,7 +1,7 @@
 import EmojiPicker from "emoji-picker-react";
 import { ListType } from "@/src/modules/todo-list/types/ListType";
 
-import { Check, ChevronRight, Pencil } from "lucide-react";
+import { Check, ChevronRight, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import {
   Select,
@@ -13,6 +13,10 @@ import {
 } from "@/src/components/ui/select";
 import { useUpdateList } from "@/src/modules/todo-list/use-querys/useUpdateList";
 import { useRouter } from "next/navigation";
+import { useDeleteList } from "@/src/modules/todo-list/use-querys/useDeleteList";
+import { useTodoListKey } from "@/src/modules/todo-list/use-querys/useGetTodoList";
+import { useAuth } from "@/src/hooks/useAuth";
+import { useQueryClient } from "@tanstack/react-query";
 
 type CardListProps = {
   finished: boolean;
@@ -36,7 +40,22 @@ export default function CardList({
   const [selectedPriority, setSelectedPriority] = useState(priority);
   const [finished, setFinished] = useState(initialFinished);
 
-  const mutation = useUpdateList({
+  const updateMutation = useUpdateList({
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const userData = useAuth();
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useDeleteList({
+    onMutate: () => {
+      console.log("OnSucess");
+      queryClient.invalidateQueries({
+        queryKey: [`${useTodoListKey}${userData.user?.userId}`],
+      });
+    },
     onError: (error) => {
       console.error(error);
     },
@@ -54,8 +73,16 @@ export default function CardList({
     setListNameInput(event.target.value);
   };
 
+  const handleDelete = () => {
+    deleteMutation.mutate({
+      listIds: [listId],
+      userId: userId,
+    });
+    setIsEditing(!isEditing);
+  };
+
   const handleSave = () => {
-    mutation.mutate({
+    updateMutation.mutate({
       listId: listId,
       userId: userId,
       finished: finished,
@@ -93,7 +120,7 @@ export default function CardList({
                 readOnly
                 checked={finished}
                 onClick={() => {
-                  mutation.mutate({
+                  updateMutation.mutate({
                     listId: listId,
                     userId: userId,
                     finished: finished ? false : true,
@@ -232,6 +259,12 @@ export default function CardList({
               </span>
             </label>
           </div>
+          <span
+            className="text-[#FFFBFF] hover:text-[#FEEDE1]"
+            onClick={handleDelete}
+          >
+            <Trash2 />
+          </span>
 
           <span
             className="text-[#FFFBFF] hover:text-[#FEEDE1]"

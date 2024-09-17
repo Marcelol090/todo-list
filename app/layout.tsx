@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import QueryProvider from "@/src/components/QueryProvider/QueryProvider";
-
+import  QueryProvider  from "@/src/components/QueryProvider/QueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,14 +16,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
-      <body className={`${inter.className} h-full`}>
-        <QueryProvider>  {/* Usando o QueryProvider aqui */}
-          <div className="bg-gradient-to-r from-[#352432] to-[#241722] h-full p-[10%] pt-16 lg:pt-1">
+    <QueryProvider>
+      <html lang="en" className="h-full">
+        <body className={`${inter.className} h-full`}>
+          <div className="h-full overflow-y-auto bg-gradient-to-r from-[#352432] to-[#241722] p-[5%]">
             {children}
           </div>
-        </QueryProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </QueryProvider>
   );
 }
