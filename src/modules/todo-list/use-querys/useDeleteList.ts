@@ -16,7 +16,6 @@ export const deleteList = async ({
 }: DeleteListProps): Promise<ListType> => {
   const token = getCookie("auth_token");
 
-  console.log("entrou");
   const response = await fetch(deleteListPath, {
     method: "DELETE",
     headers: {
