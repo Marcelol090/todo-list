@@ -1,7 +1,5 @@
-import {
-  getTodoItemsByListId,
-  GetTodoItemsByListIdProps,
-} from "@/src/modules/todo-item/services/todo-item.services";
+import { updateTodoItem, UpdateTodoItemProps } from "@/src/modules/todo-item/services/todo-item.services";
+
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -15,18 +13,35 @@ export async function POST(req: Request) {
       );
     }
 
-    const { listId, userId }: GetTodoItemsByListIdProps = await req.json();
 
-    if (!listId || !userId) {
+    const {
+      todoItemName,
+      itemId,
+      finished,
+      priority,
+      userId,
+    }: UpdateTodoItemProps = await req.json();
+
+    if (!todoItemName || !itemId || !finished || !priority || !userId) {
       return NextResponse.json(
-        { error: "Missing required fields: listId and userId" },
+        {
+          error:
+            "Missing required fields: todoItemName,itemId,finished,priority,userId,",
+        },
         { status: 400 }
       );
     }
 
-    const items = await getTodoItemsByListId({ listId, userId, authToken });
+    const item = await updateTodoItem({
+      userId,
+      itemId,
+      todoItemName,
+      finished,
+      priority,
+      authToken
+    });
 
-    return NextResponse.json(items);
+    return NextResponse.json(item);
   } catch (error: any) {
     console.error(error);
     if (error.code === "ERR_JWT_EXPIRED") {
