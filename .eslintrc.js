@@ -5,6 +5,8 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "prettier"],
   extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/stylistic-type-checked",
@@ -12,6 +14,8 @@ module.exports = {
   ],
   parserOptions: {
     project: ["./tsconfig.json"],
+    ecmaVersion: 2020, // Adjust to the ECMAScript version you're using
+    sourceType: 'module', // If you're using ES modules
   },
   rules: {
     "no-console": "warn",

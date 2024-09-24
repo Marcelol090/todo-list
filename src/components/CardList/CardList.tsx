@@ -12,9 +12,9 @@ import {
 } from "@/src/components/ui/select";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { ListType } from "@/src/modules/todo-list/types/ListType";
-import { useUpdateList } from "@/src/modules/todo-list/use-querys/useUpdateList";
 import { DeleteListButton } from "@/src/components/DeleteListButton/DeleteListButton";
+import { useUpdateList } from "@/src/modules/todo-list/use-querys/useUpdateList";
+import { ListType } from "@/src/modules/todo-list/types/ListType";
 
 type CardListProps = {
   finished: boolean;
@@ -47,8 +47,9 @@ export default function CardList({
     setShowEmojiPicker(!showEmojiPicker);
   };
 
-  const handleEmojiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmoji(event.target.value);
+  const handleEmojiChange = (emoji: string) => {
+    setEmoji(emoji);
+    setShowEmojiPicker(false);
   };
 
   const handleListNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +78,7 @@ export default function CardList({
             <span role="img" aria-label="list" className="mr-2">
               {emoji}
             </span>
-            <span>{listNameInput}</span>
+            <span className="line-clamp-1">{listNameInput}</span>
           </div>
           <div className="flex items-center justify-center gap-2">
             <div className="relative mr-2 inline-block w-10 select-none align-middle">
@@ -133,7 +134,6 @@ export default function CardList({
           "absolute z-10 h-full w-full",
           "bg-gradient-to-r from-[#352432] to-[#241722] opacity-90"
         )}
-        onClick={handleSave}
       />
       <div className="z-20 w-full p-4">
         <div
@@ -152,10 +152,9 @@ export default function CardList({
               <div className="relative">
                 <div className="absolute left-0 top-0">
                   <EmojiPicker
-                    onEmojiClick={(emojiObject) => {
-                      setEmoji(emojiObject.emoji);
-                      setShowEmojiPicker(false);
-                    }}
+                    onEmojiClick={(emojiObject) =>
+                      handleEmojiChange(emojiObject.emoji)
+                    }
                   />
                 </div>
               </div>

@@ -1,45 +1,48 @@
-
 import { TodoItemType } from "@/src/modules/todo-item/types/TodoItemType";
 import { getCookie } from "@/src/utils/getCookies";
 import { MutationOptions, useMutation } from "@tanstack/react-query";
 
-export const deleteTodoItemPath = "/api/todo-item/delete";
+export const deleteItemPath = "/api/todo-item/delete";
 
-export type DeleteTodoItemsProps = {
-  itemId: number[];
+export type DeleteItemProps = {
+  itemIds: number[];
   userId: number;
 };
 
-export const deleteTodoItems = async ({
-  itemId,
+export const deleteItem = async ({
+  itemIds,
   userId,
-}: DeleteTodoItemsProps): Promise<TodoItemType[]> => {
+}: DeleteItemProps): Promise<TodoItemType> => {
   const token = getCookie("auth_token");
 
-  const response = await fetch(deleteTodoItemPath, {
+  const response = await fetch(deleteItemPath, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      itemId,
+      itemIds,
       userId,
     }),
   });
 
   if (!response.ok) {
-    throw new Error("Failed to delete todo items");
+    throw new Error("Failed to delete item");
   }
 
   return response.json();
 };
 
-type UseDeleteTodoItemsOptions = MutationOptions<TodoItemType[], Error, DeleteTodoItemsProps>;
+type UseDeleteItemOptions = MutationOptions<
+  TodoItemType,
+  Error,
+  DeleteItemProps
+>;
 
-export const useDeleteTodoItems = (options?: UseDeleteTodoItemsOptions) => {
-  return useMutation<TodoItemType[], Error, DeleteTodoItemsProps>({
+export const useDeleteItem = (options?: UseDeleteItemOptions) => {
+  return useMutation<TodoItemType, Error, DeleteItemProps>({
     ...options,
-    mutationFn: (data: DeleteTodoItemsProps) => deleteTodoItems(data),
+    mutationFn: (data: DeleteItemProps) => deleteItem(data),
   });
 };

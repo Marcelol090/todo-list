@@ -1,4 +1,3 @@
-
 import { TodoItemType } from "@/src/modules/todo-item/types/TodoItemType";
 import { getCookie } from "@/src/utils/getCookies";
 import { MutationOptions, useMutation } from "@tanstack/react-query";
@@ -8,7 +7,7 @@ export const updateTodoItemPath = "/api/todo-item/update";
 export type UpdateTodoItemProps = {
   itemId: number;
   userId: number;
-  todoItemName?: string;
+  itemName?: string;
   finished?: boolean;
   priority?: "Alta" | "Media" | "Baixa";
 };
@@ -16,10 +15,9 @@ export type UpdateTodoItemProps = {
 export const updateTodoItem = async ({
   itemId,
   userId,
-  todoItemName,
+  itemName,
   finished,
   priority,
-
 }: UpdateTodoItemProps): Promise<TodoItemType> => {
   const token = getCookie("auth_token");
 
@@ -32,9 +30,9 @@ export const updateTodoItem = async ({
     body: JSON.stringify({
       itemId,
       userId,
-      todoItemName,
+      itemName,
       finished,
-      priority
+      priority,
     }),
   });
 
@@ -45,7 +43,11 @@ export const updateTodoItem = async ({
   return response.json();
 };
 
-type UseUpdateTodoItemOptions = MutationOptions<TodoItemType, Error, UpdateTodoItemProps>;
+type UseUpdateTodoItemOptions = MutationOptions<
+  TodoItemType,
+  Error,
+  UpdateTodoItemProps
+>;
 
 export const useUpdateTodoItem = (options?: UseUpdateTodoItemOptions) => {
   return useMutation<TodoItemType, Error, UpdateTodoItemProps>({
