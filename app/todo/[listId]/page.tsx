@@ -19,8 +19,7 @@ import { useAuth } from "@/src/hooks/useAuth";
 import {
   useTodoListByListId,
   useTodoListByListIdKey,
-} 
-from "@/src/modules/todo-list/use-querys/useTodoListByListId";
+} from "@/src/modules/todo-list/use-querys/useTodoListByListId";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowLeftIcon, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -45,7 +44,7 @@ export default function Todo() {
           .slice()
           .sort(
             (a, b) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
           ),
     },
   });
@@ -144,7 +143,7 @@ export default function Todo() {
                         listIds: [Number(listId)],
                         userId: user?.userId as number,
                       });
-                      router.push("/todo-lists");
+                      router.push("/home");
                     }}
                   >
                     Delete
@@ -154,7 +153,7 @@ export default function Todo() {
                   <button
                     className={cn(
                       "inline-flex items-center justify-center gap-2 rounded-md transition duration-150 ease-in-out",
-                      "border-primary-500 text-primary-500 hover:bg-primary-50 hover:text-primary-600 focus:ring-primary-300 border px-4 py-2.5 text-sm focus:ring-4 focus:ring-opacity-50"
+                      "border-primary-500 text-primary-500 hover:bg-primary-50 text-black hover:text-primary-600 focus:ring-primary-300 border px-4 py-2.5 text-sm focus:ring-4 focus:ring-opacity-50"
                     )}
                   >
                     Cancel

@@ -15,6 +15,9 @@ import Link from "next/link";
 import { DeleteListButton } from "@/src/components/DeleteListButton/DeleteListButton";
 import { useUpdateList } from "@/src/modules/todo-list/use-querys/useUpdateList";
 import { ListType } from "@/src/modules/todo-list/types/ListType";
+import { queryClient } from "@/src/lib/react.query";
+import { useTodoListKey } from "@/src/modules/todo-list/use-querys/useGetTodoList";
+import { useAuth } from "@/src/hooks/useAuth";
 
 type CardListProps = {
   finished: boolean;
@@ -37,6 +40,8 @@ export default function CardList({
   const [selectedPriority, setSelectedPriority] = useState(priority);
   const [finished, setFinished] = useState(initialFinished);
 
+  const userData = useAuth();
+  
   const updateMutation = useUpdateList({
     onError: (error) => {
       console.error(error);
@@ -57,14 +62,24 @@ export default function CardList({
   };
 
   const handleSave = () => {
-    updateMutation.mutate({
-      listId: listId,
-      userId: userId,
-      finished: finished,
-      listEmoji: emoji,
-      listName: listNameInput,
-      priority: selectedPriority,
-    });
+    updateMutation.mutate(
+      {
+        listId: listId,
+        userId: userId,
+        finished: finished,
+        listEmoji: emoji,
+        listName: listNameInput,
+        priority: selectedPriority,
+      },
+
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [`${useTodoListKey}${userData.user?.userId}`],
+          });
+        },
+      }
+    );
     setIsEditing(!isEditing);
   };
 
@@ -72,7 +87,13 @@ export default function CardList({
     return (
       <div className="w-full p-4">
         <div
-          className={`mb-2 flex items-center justify-between rounded-md border-l-4 ${selectedPriority === "Alta" ? "border-red-600" : selectedPriority === "Media" ? "border-yellow-500" : "border-green-500"} bg-[#2D1B30] p-4 text-white shadow-lg transition-all duration-200`}
+          className={`mb-2 flex items-center justify-between rounded-md border-l-4 ${
+            selectedPriority === "Alta"
+              ? "border-red-600"
+              : selectedPriority === "Media"
+              ? "border-yellow-500"
+              : "border-green-500"
+          } bg-[#2D1B30] p-4 text-white shadow-lg transition-all duration-200`}
         >
           <div className="flex items-center">
             <span role="img" aria-label="list" className="mr-2">
@@ -99,10 +120,20 @@ export default function CardList({
               />
               <label
                 htmlFor={`list-finished${listId}`}
-                className={`flex h-6 cursor-pointer items-center overflow-hidden rounded-full ${finished ? "justify-end" : "justify-start"} ${finished ? "bg-[#50F283]" : "bg-[#F25551]"} border shadow-xl transition ${finished ? "border-[#50F283]" : "border-[#F25551]"} `}
+                className={`flex h-6 cursor-pointer items-center overflow-hidden rounded-full ${
+                  finished ? "justify-end" : "justify-start"
+                } ${
+                  finished ? "bg-[#50F283]" : "bg-[#F25551]"
+                } border shadow-xl transition ${
+                  finished ? "border-[#50F283]" : "border-[#F25551]"
+                } `}
               >
                 <span
-                  className={`flex h-6 font-semibold ${finished ? "text-black" : "text-white"} w-6 items-center justify-center overflow-hidden rounded-full text-center text-xs ${finished ? "bg-white" : "bg-[#462730]"} transition`}
+                  className={`flex h-6 font-semibold ${
+                    finished ? "text-black" : "text-white"
+                  } w-6 items-center justify-center overflow-hidden rounded-full text-center text-xs ${
+                    finished ? "bg-white" : "bg-[#462730]"
+                  } transition`}
                 >
                   {finished ? "F" : "NF"}
                 </span>
@@ -137,7 +168,13 @@ export default function CardList({
       />
       <div className="z-20 w-full p-4">
         <div
-          className={`mb-2 flex cursor-pointer items-center justify-between rounded-md border-l-4 ${selectedPriority === "Alta" ? "border-red-600" : selectedPriority === "Media" ? "border-yellow-500" : "border-green-500"} bg-[#2D1B30] p-4 text-white shadow-lg transition-all duration-200`}
+          className={`mb-2 flex cursor-pointer items-center justify-between rounded-md border-l-4 ${
+            selectedPriority === "Alta"
+              ? "border-red-600"
+              : selectedPriority === "Media"
+              ? "border-yellow-500"
+              : "border-green-500"
+          } bg-[#2D1B30] p-4 text-white shadow-lg transition-all duration-200`}
         >
           <div className="flex items-center">
             <span
@@ -201,10 +238,20 @@ export default function CardList({
               />
               <label
                 htmlFor={`list-finished${listId}`}
-                className={`flex h-6 min-w-10 cursor-pointer items-center overflow-hidden rounded-full ${finished ? "justify-end" : "justify-start"} ${finished ? "bg-[#50F283]" : "bg-[#F25551]"} border shadow-xl transition ${finished ? "border-[#50F283]" : "border-[#F25551]"} `}
+                className={`flex h-6 min-w-10 cursor-pointer items-center overflow-hidden rounded-full ${
+                  finished ? "justify-end" : "justify-start"
+                } ${
+                  finished ? "bg-[#50F283]" : "bg-[#F25551]"
+                } border shadow-xl transition ${
+                  finished ? "border-[#50F283]" : "border-[#F25551]"
+                } `}
               >
                 <span
-                  className={`flex h-6 font-semibold ${finished ? "text-black" : "text-white"} w-6 items-center justify-center overflow-hidden rounded-full text-center text-xs ${finished ? "bg-white" : "bg-[#462730]"} transition`}
+                  className={`flex h-6 font-semibold ${
+                    finished ? "text-black" : "text-white"
+                  } w-6 items-center justify-center overflow-hidden rounded-full text-center text-xs ${
+                    finished ? "bg-white" : "bg-[#462730]"
+                  } transition`}
                 >
                   {finished ? "F" : "NF"}
                 </span>

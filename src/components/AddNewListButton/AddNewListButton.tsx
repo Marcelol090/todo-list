@@ -3,7 +3,7 @@
 import { Button } from "@/src/components/Button/Button";
 import { useAuth } from "@/src/hooks/useAuth";
 import { useCreateList } from "@/src/modules/todo-list/use-querys/useCreateList";
-import { useTodoListKey } from "@/src/modules/todo-list/use-querys/useGetTodoList";
+import { useTodoListKey } from "@/src/modules/users/services/useUpdateList";
 import { useQueryClient } from "@tanstack/react-query";
 import { CirclePlus } from "lucide-react";
 

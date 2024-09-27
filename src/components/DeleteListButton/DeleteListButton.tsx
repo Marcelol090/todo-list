@@ -10,7 +10,8 @@ import {
   DialogTrigger,
 } from "@/src/components/ui/dialog";
 import { useDeleteList } from "@/src/modules/todo-list/use-querys/useDeleteList";
-import { useTodoListKey } from "@/src/modules/todo-list/use-querys/useGetTodoList";
+import { useTodoListKey } from "@/src/modules/users/services/useUpdateList";
+
 
 import { useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
@@ -81,7 +82,7 @@ export const DeleteListButton = ({
             <button
               className={cn(
                 "inline-flex items-center justify-center gap-2 rounded-md transition duration-150 ease-in-out",
-                "border-primary-500 text-primary-500 hover:bg-primary-50 hover:text-primary-600 focus:ring-primary-300 border px-4 py-2.5 text-sm focus:ring-4 focus:ring-opacity-50"
+                "border-primary-500 text-primary-500 hover:bg-primary-50 text-black hover:text-primary-600 focus:ring-primary-300 border px-4 py-2.5 text-sm focus:ring-4 focus:ring-opacity-50"
               )}
             >
               Cancel

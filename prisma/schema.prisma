@@ -19,6 +19,7 @@ model User {
   password String
   email    String @unique
   lists    List[]
+  Item     Item[]
 }
 
 model List {
@@ -37,9 +38,12 @@ model Item {
   itemId    Int      @id @default(autoincrement()) @map("item_id")
   createdAt DateTime @default(now()) @map("created_at")
   editedAt  DateTime @default(now()) @updatedAt @map("edited_at")
-  itemName  String   @default("Item name") @map("item_name")
+  itemName  String   @default("New Item") @map("item_name")
   finished  Boolean  @default(false)
   priority  String   @default("Baixa")
   listId    Int      @map("list_id")
-  list      List     @relation(fields: [listId], references: [listId])
+  userId    Int      @map("user_id")
+
+  list List? @relation(fields: [listId], references: [listId])
+  user User? @relation(fields: [userId], references: [userId])
 }

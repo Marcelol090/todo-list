@@ -51,6 +51,7 @@ export async function createTodoItem({
     const todoItem: TodoItemType = await prisma.item.create({
       data: {
         listId,
+        userId,
       },
     });
     return todoItem;
@@ -63,43 +64,48 @@ export async function createTodoItem({
   }
 }
 export type UpdateTodoItemProps = {
+  itemName?: string;
   itemId: number;
-  userId: number;
-  authToken: string;
-  todoItemName?: string;
-  priority?: "Alta" | "Media" | "Baixa";
   finished?: boolean;
+  priority?: "Alta" | "Media" | "Baixa";
+  authToken: string;
+  userId: number;
 };
 
 export async function updateTodoItem({
+  itemName,
   itemId,
-  userId,
-  authToken,
-  todoItemName,
-  priority,
   finished,
+  priority,
+  authToken,
+  userId,
 }: UpdateTodoItemProps) {
   try {
     const { payload } = await jwtVerify(
       authToken,
       new TextEncoder().encode(process.env.JWT_SECRET!)
     );
+
     if (payload.userId !== userId) {
       throw new Error("Invalid token");
     }
+
     const todoItem = await prisma.item.findUnique({ where: { itemId } });
+
     if (!todoItem) {
       throw new Error("Todo item not found");
     }
+
     const updatedTodoItem: TodoItemType = await prisma.item.update({
       where: { itemId },
       data: {
-        itemName: todoItemName ? todoItemName : todoItem.itemName,
+        itemName: itemName ? itemName : todoItem.itemName,
+        finished: finished === undefined ? todoItem.finished : finished,
         priority: priority ? priority : todoItem.priority,
         editedAt: new Date(),
-        finished: finished === undefined ? todoItem.finished : finished,
       },
     });
+
     return updatedTodoItem;
   } catch (error: any) {
     if (error.code === "ERR_JWT_EXPIRED") {
@@ -109,13 +115,15 @@ export async function updateTodoItem({
     throw error;
   }
 }
+
 export type DeleteTodoItemProps = {
-  todoItemIds: number[];
+  itemIds: number[];
   userId: number;
   authToken: string;
 };
+
 export async function deleteTodoItem({
-  todoItemIds,
+  itemIds,
   userId,
   authToken,
 }: DeleteTodoItemProps): Promise<void> {
@@ -124,17 +132,21 @@ export async function deleteTodoItem({
       authToken,
       new TextEncoder().encode(process.env.JWT_SECRET!)
     );
+
     if (payload.userId !== userId) {
       throw new Error("Invalid token");
     }
+
     const todoItems = await prisma.item.findMany({
-      where: { itemId: { in: todoItemIds } },
+      where: { itemId: { in: itemIds } },
     });
-    if (todoItems.length !== todoItemIds.length) {
+
+    if (todoItems.length !== itemIds.length) {
       throw new Error("Some todo items were not found");
     }
+
     await prisma.item.deleteMany({
-      where: { itemId: { in: todoItemIds }},
+      where: { itemId: { in: itemIds } },
     });
   } catch (error: any) {
     if (error.code === "ERR_JWT_EXPIRED") {

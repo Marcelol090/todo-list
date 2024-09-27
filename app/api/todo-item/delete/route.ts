@@ -15,7 +15,7 @@ export async function DELETE(req: Request) {
       );
     }
 
-    const { todoItemIds: itemIds, userId }: DeleteTodoItemProps = await req.json();
+    const { itemIds, userId }: DeleteTodoItemProps = await req.json();
 
     if (!itemIds) {
       return NextResponse.json(
@@ -24,7 +24,7 @@ export async function DELETE(req: Request) {
       );
     }
 
-    await deleteTodoItem({ todoItemIds:itemIds, userId, authToken });
+    await deleteTodoItem({ itemIds, userId, authToken });
 
     return NextResponse.json({ status: 200 });
   } catch (error: any) {

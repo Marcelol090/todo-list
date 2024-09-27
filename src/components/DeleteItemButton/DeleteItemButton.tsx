@@ -9,7 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/src/components/ui/dialog";
-import { useDeleteItem } from "@/src/modules/todo-item/use-querys/useDeleteTodoItems";
+import { useDeleteItem } from "@/src/modules/todo-item/use-querys/useDeleteItem";
+
 import { useTodoItemsKey } from "@/src/modules/todo-item/use-querys/useGetTodoItem";
 
 import { useQueryClient } from "@tanstack/react-query";
@@ -81,7 +82,7 @@ export const DeleteItemButton = ({
             <button
               className={cn(
                 "inline-flex items-center justify-center gap-2 rounded-md transition duration-150 ease-in-out",
-                "border-primary-500 text-primary-500 hover:bg-primary-50 hover:text-primary-600 focus:ring-primary-300 border px-4 py-2.5 text-sm focus:ring-4 focus:ring-opacity-50"
+                "border-primary-500 text-primary-500 text-black hover:bg-primary-50 hover:text-primary-600 focus:ring-primary-300 border px-4 py-2.5 text-sm focus:ring-4 focus:ring-opacity-50"
               )}
             >
               Cancel
