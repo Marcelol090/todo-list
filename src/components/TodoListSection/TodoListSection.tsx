@@ -4,8 +4,8 @@ import CardList from "@/src/components/CardList/CardList";
 import { useTodoListsSection } from "@/src/hooks/useTodoListsSection";
 import Rectangle from "@/src/components/Icons/Rectangle";
 import { FilterList } from "@/src/components/FilterList/FilterList";
-import { useState } from "react";
-import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 export const TodoListsSection = () => {
   const [listName, setListName] = useState("");
@@ -16,8 +16,14 @@ export const TodoListsSection = () => {
     "Todas" | "F" | "NF"
   >("Todas");
 
-  const searchParams = useParams();
-  console.log(searchParams);
+  // const searchParams = useSearchParams();
+
+  // // Acesse diretamente os parâmetros da URL como propriedades
+  // const listNameParam = searchParams.get("listName");
+  // const priorityParam = searchParams.get("priority");
+  // const finishedParam = searchParams.get("finished");
+
+  // console.log(listNameParam, priorityParam, finishedParam);
 
   // FAZER OS FILTROS IREM PARA A URL
 
@@ -29,14 +35,7 @@ export const TodoListsSection = () => {
 
   return (
     <>
-      <FilterList
-        listName={listName}
-        selectedPriority={selectedPriority}
-        selectedFinished={selectedFinished}
-        setSelectedPriority={setSelectedPriority}
-        setSelectedFinished={setSelectedFinished}
-        setListName={setListName}
-      />
+      <FilterList />
 
       {todoLists && todoLists.length > 0 ? (
         <section className="relative flex w-full flex-1 flex-col items-center justify-start">

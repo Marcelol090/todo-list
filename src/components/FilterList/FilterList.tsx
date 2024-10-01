@@ -8,51 +8,41 @@ import {
   SelectItem,
   SelectLabel,
   SelectTrigger,
+  SelectValue,
 } from "@/src/components/ui/select";
 import { Filter, Search } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
 
-export type FilterListProps = {
-  listName: string;
-  selectedPriority: "Todas" | "Alta" | "Media" | "Baixa";
-  selectedFinished: "Todas" | "F" | "NF";
-  setSelectedPriority: (value: "Todas" | "Alta" | "Media" | "Baixa") => void;
-  setSelectedFinished: (value: "Todas" | "F" | "NF") => void;
-  setListName: (value: string) => void;
-};
-
-export function FilterList({
-  listName,
-  selectedPriority,
-  selectedFinished,
-  setSelectedPriority,
-  setSelectedFinished,
-  setListName,
-}: FilterListProps) {
+export function FilterList({}) {
+  const router = useRouter();
+  const [priority, setPriority] = useState("Todas");
+  const [finished, setFinished] = useState("Todas");
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Casting e.target to HTMLFormElement
     const form = e.target as HTMLFormElement;
 
-    // Accessing the value of listName
-    setListName(form.listName.value);
-    setSelectedFinished(form.selectedFinished.value);   
-    setSelectedPriority(form.selectedPriority.value);
-    
-    console.log(listName, selectedPriority, selectedFinished);
+    // Crie uma nova instância de URLSearchParams
+    const currentParams = new URLSearchParams(window.location.search);
+
+    // Atualize os parâmetros com os novos valores
+    currentParams.set("listName", form.listName.value);
+    currentParams.set("priority", priority);
+    currentParams.set("finished", finished);
+
+    // Use router.push para atualizar a URL com os novos parâmetros
+    router.push(`?${currentParams.toString()}`);
   };
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex gap-4 p-4 items-center">
         <Filter size={48} />
-        <Input type="listName" placeholder="Nome da Lista" />
-        <Select
-          value={selectedPriority}
-        
-        >
+        <Input type="text" placeholder="Nome da Lista" id="listName" />
+        <Select onValueChange={setPriority} defaultValue={priority}>
           <SelectTrigger className="min-w-20 rounded border bg-transparent px-2">
-            <span className="text-sm font-semibold">{selectedPriority}</span>
+            <SelectValue placeholder="Selecione a prioridade" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -64,9 +54,9 @@ export function FilterList({
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select value={selectedFinished}>
+        <Select onValueChange={setFinished} defaultValue={finished}>
           <SelectTrigger className="min-w-20 rounded border bg-transparent px-2">
-            <span className="text-sm font-semibold">{selectedFinished}</span>
+            <SelectValue placeholder="Selecione o finalizado" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
