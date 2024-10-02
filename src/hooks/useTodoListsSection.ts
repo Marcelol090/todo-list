@@ -26,27 +26,33 @@ export function useTodoListsSection({
     options: {
       enabled: !!user,
       select: (data) => {
+        // Providing default values if the parameters are null
+        const listNameParamNormalized = listNameParam ?? "";
+        const priorityParamNormalized = priorityParam ?? "Todas";
+        const finishedParamNormalized = finishedParam ?? "Todas";
+  
         const filteredData = data.filter((list) => {
           // Filtrando por listName (se fornecido)
-          const matchesListName = !listNameParam || list.listName.toLowerCase().includes(listNameParam.toLowerCase());
-
+          const matchesListName = !listNameParamNormalized || list.listName.toLowerCase().includes(listNameParamNormalized.toLowerCase());
+  
           // Filtrando por priority (se fornecido, mas ignorando "Todas")
           const matchesPriority =
-            priorityParam === "Todas" || list.priority === priorityParam;
-
+            priorityParamNormalized === "Todas" || list.priority === priorityParamNormalized;
+  
           // Filtrando por finished ("F" = true, "NF" = false, "Todas" ignora)
           const matchesFinished =
-            finishedParam === "Todas" ||
-            (finishedParam === "F" && list.finished === true) ||
-            (finishedParam === "NF" && list.finished === false);
-
+            finishedParamNormalized === "Todas" ||
+            (finishedParamNormalized === "F" && list.finished === true) ||
+            (finishedParamNormalized === "NF" && list.finished === false);
+  
           return matchesListName && matchesPriority && matchesFinished;
         });
-
+  
         return filteredData.slice().reverse();
       },
     },
   });
+  
 
   return { todoLists, isFetching };
 }

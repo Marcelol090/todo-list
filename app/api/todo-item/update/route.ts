@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
     const todoItem = await updateTodoItem({
       itemId,
-      todoItemName: itemName,
+      itemName,
       finished,
       authToken,
       userId,

@@ -23,29 +23,55 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowLeftIcon, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useTodoItems } from "@/src/modules/todo-item/use-querys/useGetTodoItem";
 import { useDeleteList } from "@/src/modules/todo-list/use-querys/useDeleteList";
 import EmptyToDoListSVG from "@/src/components/Icons/EmptyToDoListSVG";
+import { FilterItems } from "@/src/components/FilterItems.tsx/FilterItems";
 
 export default function Todo() {
   const { listId } = useParams();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const itemNameParam = searchParams.get("itemName");
+  const priorityParam = searchParams.get("priority");
+  const finishedParam = searchParams.get("finished");
 
   const { data: todoItems } = useTodoItems({
     listId: Number(listId),
     userId: user?.userId as number,
     options: {
       enabled: !!user,
-      select: (data) =>
-        data
+
+      select: (data) => {
+        const filteredData = data.filter((item) => {
+          // Filtrando por listName (se fornecido)
+          const matchesItemName =
+            !itemNameParam ||
+            item.itemName.toLowerCase().includes(itemNameParam.toLowerCase());
+
+          // Filtrando por priority (se fornecido, mas ignorando "Todas")
+          const matchesPriority =
+            priorityParam === "Todas" || item.priority === priorityParam;
+
+          // Filtrando por finished ("F" = true, "NF" = false, "Todas" ignora)
+          const matchesFinished =
+            finishedParam === "Todas" ||
+            (finishedParam === "F" && item.finished === true) ||
+            (finishedParam === "NF" && item.finished === false);
+
+          return matchesItemName && matchesPriority && matchesFinished;
+        });
+
+        return filteredData
           .slice()
           .sort(
             (a, b) =>
               new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-          ),
+          );
+      },
     },
   });
 
@@ -166,6 +192,7 @@ export default function Todo() {
           <AddNewItemButton listId={Number(listId)} />
         </div>
       </header>
+      <FilterItems />
       {todoItems?.length ? (
         <section className="relative flex w-full flex-1 flex-col items-center justify-center">
           {todoItems.map((item) => (
